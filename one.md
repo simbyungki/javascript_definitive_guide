@@ -31,7 +31,7 @@ The JavaScript Definitive Guide
 - 명시적 타입변환은 Boolean() 함수를 사용할 수 있다.
 ### 함수 (function)
 - 전달인자(agument), 매개변수(parameter)
-- 41p
+- 일반적으로
 <pre>
     <code>
         asf
