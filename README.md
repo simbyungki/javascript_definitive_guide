@@ -1,5 +1,5 @@
 # javascript_definitive_guide
-The JavaScript Definitive Guide
+자바스크립트 완벽가이드 정리
 
 # 자바스크립트 소개
 - 객체지향 프로그래밍을 지원하는 인터프리터 방식의 프로그램이다.
