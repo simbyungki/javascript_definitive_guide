@@ -104,6 +104,54 @@ obj.name //obj객체의 name식별자(property)에 접근</code></pre>
 - []와 . 모두 연산자로 취급된다.
 
 ## 문장
-###
+### switch
+- if문은 프로그램이 실행되는 흐름에 분기(branch)를 일으킨다.
+- 여러개의 if문(else if)을 사용해서 다중 분기를 수행할 수 있지만, 모든 분기가 단 하나의 변수 값에 의해 결정될 때에는 낭비이다. 이때 switch문을 사용하면 효율적이다.
+<pre><code>switch(표현식){
+    문장
+}</code></pre>
+- switch문이 실행되면 "표현식"의 값을 계산하고 이에 매칭되는 case 레이블을 찾고, 올바른 레이블을 찾으면 해당 case 코드블록을 실행한다. 만약 매칭되는 레이블이 없다면 default 레이블의 코드블록을 실행하며, defalut; 레이블도 없으면 모든 코드블록을 skip한다.
+<pre><code>switch(n){
+    case 1 :
+        // n이 1이면 실행
+        break;
+    case 2 :
+        // n이 2면 실행
+        break;
+    default :
+        //모든 case에 해당하지 않는 경우 실행
+}</code></pre>
+- break문은 코드 실행을 중지하고 switch문이나 루프의 끝으로 건너뛰는 역할을 한다.
+- 함수 내에서 switch문을 사용할 때는 break대신 return을 사용할 수도 있다.
+- case문에서는 동등 연산자(==)가 아닌 일치 연산자(===)가 사용된다.
+### while
+- 기본적인 반복문. 표현식을 평가 후 그 값이 true이면 실행된 후, 다시 표현식을 평가한다. 표현식이 false가 될때까지 반복된다. false가 되면 while문이 종료된다.
+<pre><code>while(표현식){
+    문장
+}</code></pre>
+### do/while
+- while문과 많은 점에서 비슷하다. 차이점은 루프 표현식이 루프의 처음이 아니라 마지막이다. 때문에 한 번은 루프의 몸체가 실행된다.
+<pre><code>do{
+    문장
+}while(표현식);</code></pre>
+### for
+<pre><code>for(초기화; 평가; 증가(감)){
+    문장
+}</code></pre>
+### for/in
+<pre><code>for(변수 in 객체){
+    문장
+}</code></pre>
+### 레이블
+- switch문에서 쓰이는 case와 default; 레이블은 특별한 레이블 문이다.
+<pre><code>parser:
+    while(token != null){
+    //문장
+}</code></pre>
+- 어떤 문장에 레이블을 붙이면 다른 곳에서 그 문장을 참조할 수 있는 이름이 생기는 셈이다. 레이블은 어떤 문장에라도 붙일 수 있지만 흔히 while, do/while, for, for/in과 같은 루프에 붙인다.
+### break
+- break의 역할은 루프나 switch에서 빠져 나오게 하는 것으로 break키워드 뒤에 레이블 이름이 따라올 수 있다.
+<pre><code>break 레이블 이름;</code></pre>
+-
 
-141
+152
