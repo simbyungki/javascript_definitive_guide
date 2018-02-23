@@ -255,7 +255,16 @@ with(frames[1].document.forms[0]){
 - 객체 프로퍼티 값에 접근하기 위해서는 마침표(.) 연산자를 사용한다.
 <pre><code>//obj객체의 x프로퍼티를 변수 x에 담는다.
 var x = obj.x;</code></pre>
-###프로퍼티 존재 확인
+### 객체 생성하기
+<pre><code>var empty = {};
+var point = {x:200, y:200};
+var person = {
+    "name" : "bk",
+    "age" : 24,
+    "hobby" : ["soccer", "baseball"]
+}</code></pre>
+### 객체 프로퍼티
+#### 프로퍼티 존재 확인
 - in 연산자를 사용하여 객체 프로퍼티의 존재 여부를 확인할 수 있다.
 <pre><code>//객체 obj에 "x"프로퍼티가 있으면 alert()을 실행한다.
 if("x" in obj){
@@ -265,32 +274,95 @@ if("x" in obj){
 <pre><code>if(obj.x !== undefined){
     alert();
 }</code></pre>
-###프로퍼티 삭제
+#### 프로퍼티 삭제
 - 객체의 프로퍼티를 삭제하기 위해서는 delete 연산자를 사용한다.
 <pre><code>delete obj.x;</code></pre>
 - 객체의 프로퍼티에 접근하기 위해서 마침표(.) 연산자를 사용하는데 [] 연산자를 사용해도 객체의 프로퍼티에 접근할 수 있다.
 <pre><code>if(obj.x === obj["x"]) //true</code></pre>
 - 마침표 연산자에서는 프로퍼티 이름을 식별자로 지정했지만, [] 연산자에서는 이름을 문자열로 표현했다는 점에서 자바스크립트의 타입 제약의 느슨함, 유연성이 드러난다.
 ### 공통적으로 나타나는 객체 프로퍼티와 메서드
--
+#### constructor 프로퍼티
+- 모든 객체는 객체를 초기화하는데 사용되는 생성자 함수인 constructor프로퍼티를 지니고 있다.
+<pre><code>var d = new date();
+d.constructor == Date;  //true</code></pre>
+- 생성자 함수는 객체의 범주 즉 클래스를 정의하므로, constructor 프로퍼티는 객체의 타입을 판단하는데 사용될 수 있다.
+<pre><code>if((typeof o == "object") && (o.contructor == Date)){
+    문장
+}
+//instanceof 연산자는 constructor프로퍼티의 값을 사용한다. 따라서 아래와 같이 작성할 수 있다.
+if((typeof o == "object") && (o instanceof Date)){
+    문장
+}</code></pre>
+#### toString() 메서드
+- toString() 메서드는 별도의 전달 인자 없이 호출되며, 메서드를 호출한 객체의 값을 어떠한 방식으로든 표현하는 문자열을 결과로 반환한다.
+<pre><code>var x = {x:100, y:function(){ return x; }}
+x.y.toString(); //"function(){ return x; }"</code></pre>
+#### toLocaleString() 메서드
+- 이 메서드의 목적은 객체의 지역화(localized)된 문자열 표현을 제공하기 위함이다.
+- ?
+#### valueOf() 메서드
+- 객체를 문자열이 아니라 숫자 같은 다른 기본 타입으로 변환하려 할 때 호출된다.
+#### hasOwnProperty() 메서드
+- 이름을 담는 한 개의 문자열 전달인자를 받아서 객체가 이 프로퍼티를 소유하고 있는지 검사한다. 프로퍼티가 상속받은 것이 아니고 객체 안에 지역적으로 정의되어 존재한다면 true를 반환한다.
+<pre><code>var o = {}
+o.hasOwnProperty("name");   //false
+o.hasOwnProperty("toString");   //false; toString은 상속받은 프로퍼티다.
+Math.hasOwnProperty("cos");     //true; Math객체에 cos프로퍼티가 있다.</code></pre>
+#### propertyIsEnumerable() 메서드
+- hasOwnProperty와 마찬가지로 프로퍼티의 이름을 담은 문자열 전달 인자를 하나 받아, 해당 인자의 이름을 가진 프로퍼티가 상속받지 않고 직접 지역적으로 정의했는지 검사한다. 나아가 for/in 루프를 사용하여 열거될 수 있는 것인지 검사 후 조건이 충족되면 true를 반환한다.
+####isPrototypeOf() 메서드
+- 해당 메서드의 객체가 전달 인자로 주어진 객체의 프로토타입 객체라면 true를 반환한다.
+- ?
+### 배열
+- 배열은 추가 기능을 조금 지닌 객체에 지나지 않는다. (typeof 연산자를 사용하여 확인할 수 있다. => "object")
+<pre><code>var empty = [];  //빈 배열
+var primes = [2, true, "true", 3];  //서로 다른 타입을 원소로 구성
+//아래와 같이 임의의 표현식도 사용할 수 있다.
+var year = 2018;
+var table = [year, year+1, year+2];
+//배열 리터럴은 객체 리터럴이나 또다른 배열 리터럴을 포함할 수 있다.
+var b = [[1, {x:2, y:3}, [3, {x:4, y:5}]]];
+//Array() 생성자를 사용하여 생성할 수도 있다.
+var a = new Array();    //빈 배열 생성
+var a = new Array(5,4,3,"test");    //각각 다른 4개의 원소 생성
+//1개의 숫자값만 인자로 넘길 시 10개의 원소를 가진 배열이 생성된다. [,,,,]
+//이때 각 원소의 값은 undefined이며 length 프로퍼티의 값은 생성자의 전달 인자에 명시된 수와 동일하다.
+//이 방법은 배열에 저장될 원소의 개수를 미리 알 수 있을 때(알릴 때) 사용된다.
+//이 경우에는 배열 리터럴은 적합치 않다.
+var a = new Array(5);</code></pre>
+#### 배열 원소 읽고 쓰기
+- 배열의 인덱스에는 반드시 0보다 크거나 같고 정수를 사용해야만 한다.
+#### 배열에 새로운 원소 추가하기
+- 배열에 새로운 원소를 추가하려면 그 값을 할당하기만 하면 된다.
+<pre><code>a[10] = 10;</code></pre>
+- 배열의 인덱스는 연속적이지 않아도 된다. **자바스크립트는 배열에 실제로 저장된 원소들에 대해서만 메모리를 할당하도록 구현할 수 있다.**
+<pre><code>//0부터 9,999개의 인덱스에 대해서는 메모리를 할당하지 않는다.
+a[10000] = "this number : 10,000";</code></pre>
+- 또한 배열원소는 객체에도 추가될 수 있다.
+<pre><code>//객체에 "0"이라는 이름의 프로퍼티를 추가할 뿐이지 객체가 배열이 되지는 않는다.
+var a = {x:200,y:200};
+a[0] = "text";
+console.log(a);    // {0:"text", x:200, y:200};</code></pre>
+#### 배열 원소 삭제하기
+
+
+
+179
 
 
 
 
 
 
-173
 
 
 
 
 
 
+2013.02 ~ 2014.03 (주)제오젠 | W퍼블리싱팀 / 사원 (웹퍼블리싱 담당)
 
-
-
-
-
+2011.01 ~ 2013.02 (주)DIT | 사업기획부 / 웹팀 / 연구원 (웹디자인 및 웹퍼블리싱 담당)
 
 
 
