@@ -552,9 +552,79 @@ var person = {
 exam(person);</code></pre>
 ### 전달인자 데이터 타입
 - 자바스크립트 함수의 전달인자들은 데이터 타입이 선언되지 않고, 함수에 값을 전달할 때도 데이터 타입 검사를 수행하지 않는다.
--
+- 때문에 전달인자의 데이터 타입을 주석으로 적어 넣어 코드 자체를 문서화하면 도움이 된다.
+<pre><code>function max(/* number */){
+    문장
+}</code></pre>
+### 데이터로서의 함수
+- 함수의 가장 중요한 특징은 프로그램 상에서 정의되고 또 호출될 수 있다는 점이다.
+- 자바스크립트에서 함수는 문법일 뿐만 아니라 데이터이기도 하다. 즉, 변수에 할당되거나 객체 프로퍼티와 배열 원소들에 저장될 수 있고 전달인자 등으로도 사용될 수 있다.
+<pre><code>function square(x){ return x*x; }
+var a = square(4);      //변수 a에는 숫자 16이 저장된다.
+var b = square;     // b는 square와 같은함수이다.
+var c = b(4);   //변수 c에는 숫자 16이 저장된다.</code></pre>
+- 함수는 전역변수 뿐만 아니라 객체 프로퍼티에도 할당될 수 있는데, 이를 메서드라 부른다.
+<pre><code>var o = new Object();
+o.square = function(x){ return x*x; }   //함수 리터럴
+y = o.square(4);    //변수 y에는 숫자 16이 저장된다.</code></pre>
+- 배열 원소에 함수를 할당하는 경우에는 함수명도 필요가 없다.
+<pre><code>var a = new Array();
+a[0] = function(x){ return x*x; }
+a[1] = 4;
+a[2] = a[0](a[1]);      //a[2]에는 숫자 16이 저장된다.</code></pre>
+> **함수를 데이터로서 사용하기**
+<pre><code>//간단한 함수를 몇 개 정의한다.
+function add(x,y){ return x + y; }
+function subtract(x,y){ return x - y; }
+function multiply(x,y){ return x * y; }
+function divide(x,y) { return x / y; }
 
-199
+//아래 정의되는 함수는 위 연산자 함수 중 하나를 전달인자로 받아
+//두 개의 피연산자와 함께 호출한다.
+function operate(operator, operand1, operand2){
+    return operator(operand1, operand2);
+}
+//(2+3) + (4*5) 같은 수식을 계산하기 위해 아래와 같이 함수를 호출한다.
+var i = operate(add, operate(add, 2, 3), operate(multiply, 4, 5));\
+//최초 정의한 연산 함수들을 함수 리터럴을 사용해 재 정의한다.
+//함수 리터럴들은 객체 리터럴안에 둔다.
+var operators = {
+    add: function(x,y){ return x + y; },
+    subtract: function(x,y){ return x - y; },
+    multiply: function(x,y){ return x * y; },
+    divide: function(x,y) { return x / y; },
+    pow: Math.pow   //이미 정의되어 있는 함수도 사용 가능하다.
+}
+//아래 함수는 연산자 함수의 이름을 전달인자로 받아 작동한다.
+//객체 안에서 연산자 함수를 검색한 후, 주어진 피연산자들과 함께 호출한다.
+function operate2(op_name, operand1, operand2){
+    if(typeof operators[op_name] == "function"){
+        return operators[op_name](operand1, operand2);
+    }else{
+        throw "unknown operator";
+    }
+}
+//("hello +" "+ "world") 같은 표현식의 값을 계산하기 위하여,
+//아래와 같이 호출할 수 있다.
+var i = operate2("add", "hello", operate2("add", " ", "world"))</code></pre>
+### 메서드로서의 함수
+- 메서드는 객체 프로퍼티에 저장되어 객체를 통해 호출할 수 있는 함수에 지나지 않는다.
+- 메서드에는 중요한 프로퍼티가 하나 있다. 호출된 메서드가 속하여 있는 객체는 메서드 몸체 안에 this라는 키워드의 값으로 저장된다. o.f() 메서드를 호출할 때 메서드의 몸체 안에서는 객체 o를 this키워드로 가리킬 수 있다.
+<pre><code>var calculator = {
+    operand: 1,
+    operand2: 1,
+    compute: function(){
+        this.result = this.operand + this.operand2;
+    }
+}
+calculator.compute();
+console.log(calculator.result);     //2
+</code></pre>
+
+
+
+
+206 this
 
 
 
