@@ -654,7 +654,7 @@ function f(x,y,z){
 - 모든 함수에는 미리 정의된 prototype 객체를 가리키는 prototype 프로퍼티가 있다. 이 prototype 객체는 함수가 new 연산자를 통해 생성자로 사용될 때, 새 객체를 정의하는 과정에서 매우 중요한 역할을 수행한다.
 #### 나만의 함수 프로퍼티 정의
 - 함수 호출의 경계를 넘어 존재가 유지되는 변수를 사용해야 할 때가 있다. 이땐 전역 변수를 정의하여 네임스페이스를 지저분하게 하는 대선 Function객체의 프로퍼티를 사용하는 것이 유용하다.
-<code><pre>//'정적' 변수를 생성, 초기화한다.
+<pre><code>//'정적' 변수를 생성, 초기화한다.
 //함수 선언은 코드가 실행되기 전 처리된다. 따라서 아래와 같은 할당 연산을
 //함수 선언 이전에 실제로 수행할 수 있다.
 uniqueNum.counter = 0;
@@ -663,7 +663,7 @@ uniqueNum.counter = 0;
 function uniqueNum(){
     //'정적' 변수를 증가시키고 반환한다.
     counter : 0;
-}</pre></code>
+}</code></pre>
 #### apply()와 call() 메서드
 - ECMAScript는 모든 함수에 대하여 call()과 apply() 메서드를 정의한다. 이 메서드를 사용하면 함수가 마치 다른 어떤 객체의 메서드인 것처럼 호출 될 수 있다.
 <pre><code>obj = new Array;
@@ -765,7 +765,8 @@ function bindArguments(/* function */f, /* initial arguments */){
     }
 }
 ???</code></pre>
-
+### 함수 유효 범위와 클로저
+-
 
 211
 
