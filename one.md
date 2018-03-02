@@ -618,13 +618,156 @@ var i = operate2("add", "hello", operate2("add", " ", "world"))</code></pre>
     }
 }
 calculator.compute();
-console.log(calculator.result);     //2
-</code></pre>
+console.log(calculator.result);     //2</code></pre>
+- 대체로 메서드는 그 메서드가 속해 있는 객체에 대해 무엇인가 연산을 수행하기 때문에 메서드 형태로 함수를 호출하는 구문은 그 함수가 객체와 관련하여 자동한다는 사실을 표현하는 세련된 방법이다.
+<pre><code>//아래 가상 함수(메서드)는 객체 rec위에서 완전히 동일한 연산을 수행한다.
+//첫 번째 메서드 호출이 이 연산의 주요 초점이 객체 rect임을 명확히 나타낸다.
+rect.setSize(width, height);
+setRectSize(rect, width, height);</code></pre>
+- 만약 함수를 메서드로서가 아니라 함수로 호출했다면 this 키워드는 전역 객체를 가리킨다.
+- this가 변수 이름이나 프로퍼티 이름이 아니라 키워드임을 주의해야한다. this에는 절대 다른 값을 할당할 수 없다.
+### 생성자 함수
+- 생성자 함수는 객체의 프로퍼티들을 초기화하는 함수이며 new 연산자와 함꼐 사용될 의도로 작성된다.
+- new연산자는 새로운 객체를 생성, this 키워드의 값으로 하여 생성자 함수를 호출한다.
+### 함수 프로퍼티와 메서드
+#### length 프로퍼티
+- Function 객체의 length 프로퍼티는 함수에 선언된 매개변수가 정확히 몇 개 인지 명시한다. arguments.lengthd와는 달리 length 프로퍼티는 함수 몸체의 안과 밖에서 모두 사용할 수 있다.
+<pre><code>//함수가 기대하는 것과 같은 개수의 전달인자를 건네받았는지 검사하는 함수
+function argCheck(args){
+    //실제 건내받은 전달인자 수
+    var actual = args.length;
+    //함수가 기대하는 전달인자 수
+    var expected = args.callee.length;
+    //두 수가 일치하지 않으면 예외 발생
+    if(actual != expected){
+        throw new Error('error!'+ actual + '개의 전달인자를 넘겼습니다. ' + expected + '개의 전달인자만 넘겨주세요.');
+    }
+}
+function f(x,y,z){
+    //메서드가 기대하는 개수의 전달인자를 실제로 전달 받았는지 검사
+    //그렇지 않다면 예외 발생
+    argCheck(arguments);
+    //나머지 문장
+    return x+y+z;
+}</code></pre>
+#### prototype 프로퍼티
+- 모든 함수에는 미리 정의된 prototype 객체를 가리키는 prototype 프로퍼티가 있다. 이 prototype 객체는 함수가 new 연산자를 통해 생성자로 사용될 때, 새 객체를 정의하는 과정에서 매우 중요한 역할을 수행한다.
+#### 나만의 함수 프로퍼티 정의
+- 함수 호출의 경계를 넘어 존재가 유지되는 변수를 사용해야 할 때가 있다. 이땐 전역 변수를 정의하여 네임스페이스를 지저분하게 하는 대선 Function객체의 프로퍼티를 사용하는 것이 유용하다.
+<code><pre>//'정적' 변수를 생성, 초기화한다.
+//함수 선언은 코드가 실행되기 전 처리된다. 따라서 아래와 같은 할당 연산을
+//함수 선언 이전에 실제로 수행할 수 있다.
+uniqueNum.counter = 0;
+//아래 선언된 함수는 호출될 때마다 서로 다른 고유한 값을 반환한다.
+//마지막으로 반환한 값에 대한 정보를 기록하기 위해 '정적' 프로퍼티를 사용한다.
+function uniqueNum(){
+    //'정적' 변수를 증가시키고 반환한다.
+    counter : 0;
+}</pre></code>
+#### apply()와 call() 메서드
+- ECMAScript는 모든 함수에 대하여 call()과 apply() 메서드를 정의한다. 이 메서드를 사용하면 함수가 마치 다른 어떤 객체의 메서드인 것처럼 호출 될 수 있다.
+<pre><code>obj = new Array;
+function f(x,y){ return x + y; }
+f.call(obj, 1, 2);
+
+//위 표현은 아래와 유사하다.
+obj.m = f;
+obj.m(1, 2);
+delete obj.m;</code></pre>
+- apply() 메서드는 call()메서드와 유사하지만 함수로 건네줄 전달인자들을 배열로 지정한다는 점이 다르다.
+<pre><code>f.apply(obj, [1,2]);</code></pre>
+### 유용한 함수들
+#### 객체용 함수들
+<pre><code>//객체 obj의 열거 가능한 프로퍼티들의 이름을 담은 배열을 반환한다.
+function getPropertyNames(/* object */ obj){
+    var r = [];
+    for(name in obj){ r.push(name); }
+    return r;
+}
+
+//객체 form의 열거 가능한 프로퍼티들을 객체 to로 복사한다.
+//만약 to가 null이면 새로운 객체를 생성한다. 아래 함수는 객체 to를 반환하거나
+//새로 생성한 객체를 반환한다.
+function copyProperties(/* object */ from, /* optional object */ to){
+    if(!to){ to = {}; }
+    for(p in from){
+        to[p] = from[p];
+    }
+    return to;
+}
+
+//객체 from의 열거 가능한 프로퍼티들을 객체 to로 복사하되,
+//to에 의해 정의되지 않은 프로퍼티만 복사한다.
+//아래 함수는 to에 미리 정의되어 있지 않은 값들에 대해 from에 저장해 둔
+//기본값들을 사용하려 할 때 유용하다.
+function copyUndefinedProperties(/* object */ from, /* object */ to){
+    for(p in from){
+        if(!p in to) {
+            to[p] = from[p];
+        }
+    }
+}</code></pre>
+#### 배열을 위한 함수
+<pre><code>//배열 a의 각 원소를 지정된 술어(predicate) 함수로 전달한다.
+//술어 함수가 true를 반환한 원소들로 이루어진 배열을 결과로서 반환한다.
+function filterArray(/* array */a, /* Boolean function */ predicate){
+    var results = [];
+    //술어 함수가 배열의 길이를 반환할 경우에 대비하여
+    var length = a.length;
+    for(var i = 0; i < length; i++){
+        var element = a[i];
+        if(predicate(element)){
+            result.push(element);
+        }
+    }
+    return results;
+}
+
+//배열 a의 각 원소를 지정된 함수 f로 전달하여 얻은 결과들을 원소로 하는
+//배열을 반환한다.
+function mapArray(/* array */ a, /* function */ f){
+    var r = [];
+    //함수 f가 배열 길이를 반환할 경우를 대비
+    var length = a.length;
+    for(var i = 0; i < length; i++){
+        r[i] = f(a[i]);
+    }
+    return r;
+}</code></pre>
+#### 함수용 함수 ~~??~~
+- 아래 함수들은 중첩된 함수를 사용하고 반환한다. 이렇게 반환되는 중첩된 함수들은 때때로 **클로저(closure)**라 불린다.
+<pre><code>//함수 f를 객체 o의 메서드로 하여 호출하는 독립형 함수를 반환한다.
+//이것은 메서드를 함수에 전달하려 할 때 유용하다. 만약 함수를 그 함수의 객체와
+//연결하지 않으면, 그 연관 관계는 소실되며 전달한 메서드는 일반 함수처럼
+//호출된다.
+function bindMethord(/* object */ o, /* function */ f){
+    return function(){ return f.apply(o, arguments) }
+}
+???
+//함수 f를 지정된 전달인자와 함께 호출해 주는 함수를 반환한다.
+//이렇게 반환된 함수는 또한 추가적인 전달인자들과 함께 호출될 수 있다.
+//(때때로 'currying'이라 불린다.)
+function bindArguments(/* function */f, /* initial arguments */){
+    var boundArgs = arguments;
+    return function(){
+        //전달인자들로 구성된 배열을 만든다. 이 배열은 이전에 건네받은
+        //전달인자를 원소로 시작하여, 지금 추가로 건네받은 전달인자까지
+        //포함한다.
+        var args = [];
+        for(var i = 1; i < boundArgs.length; i++){
+            args.push(boundArgs[i]);
+        }
+        for(var i = 0; i < arguments.length; i++){
+            args.push(arguments[i]);
+        }
+        //전달인자들과 함께 함수를 호출한다.
+        return f.apply(this, args);
+    }
+}
+???</code></pre>
 
 
-
-
-206 this
+211
 
 
 
