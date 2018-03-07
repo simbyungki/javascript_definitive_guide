@@ -817,10 +817,21 @@ console.log(constructFunction());
 var array = new Array(10);
 var today = new Date();</code></pre>
 - 위와 같이 new 연산자 뒤에는 항상 함수 호출이 따라와야 한다. new 연산자는 아무 프로퍼티도 없는 새 객체를 생성한 후 new 연산자 뒤에 있는 함수를 호출하고, this 키워드가 새로 생성된 객체를 가리키게 한다. 이런식으로 new 연산자와 함께 사용되도록 설계된 함수를 **생성자 함수 또는 간단하게 생성자**라고 부른다.
--
--
+- 자바스크립트에서는 간단하게 this가 가리키는 객체에 몇 가지 프로퍼티들을 추가하는 생성자 함수를 정의할 수 있다.
+<pre><code>//생성자 정의
+//'this'와 연관되어 있는 객체를 초기화 한다.
+function Rectangle(w, h){
+    this.width = w;
+    this.height = h;
+}
+//Rectangle 객체를 두 개 만들기 위해 생성자를 호출한다.
+//생성자가 새 객체를 각각 초기화할 수 있게 너비와 높이를 인자로 넘긴다.
+var rect1 = new Rectangle(2,4);     // rect1 = { width:2, height:4 }
+var rect2 = new Rectangle(8.5, 11);     // rect2 = { width:8.5, height:11 }</code></pre>
+### 프로토타입과 상속
+- 메서드는 객체의 프로퍼티이자 호출 가능한 함수이다. 메서드를 호출하면, 메서드 내의 this 키워드는 메서드가 속한 객체를 가리킨다.
 
-225
+226
 
 
 
