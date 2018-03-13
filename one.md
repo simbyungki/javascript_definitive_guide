@@ -824,6 +824,7 @@ function Rectangle(w, h){
     this.width = w;
     this.height = h;
 }
+
 //Rectangle 객체를 두 개 만들기 위해 생성자를 호출한다.
 //생성자가 새 객체를 각각 초기화할 수 있게 너비와 높이를 인자로 넘긴다.
 var rect1 = new Rectangle(2,4);     // rect1 = { width:2, height:4 }
@@ -851,14 +852,13 @@ function Rectangle(w, h){
 var r = new Rectangle(8.5, 11);
 var a = r.area();
 </code></pre>
-###
-
-
-
-
-
-226
-
+227 ~ 228?
+#### 상속받은 프로퍼티의 읽기와 쓰기
+229 ~ 230?
+#### 내장형 타입의 확장
+231 ~ 233?
+### 자바스크립트의 클래스 시뮬레이션
+233
 
 
 
