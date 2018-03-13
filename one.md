@@ -830,6 +830,32 @@ var rect1 = new Rectangle(2,4);     // rect1 = { width:2, height:4 }
 var rect2 = new Rectangle(8.5, 11);     // rect2 = { width:8.5, height:11 }</code></pre>
 ### 프로토타입과 상속
 - 메서드는 객체의 프로퍼티이자 호출 가능한 함수이다. 메서드를 호출하면, 메서드 내의 this 키워드는 메서드가 속한 객체를 가리킨다.
+<pre><code>//Rectangle의 객체로 표현된 사각형의 넓이를 계산
+function computeAreaOfRectangle(r){ return r.width * r.height; }
+//위 함수는 정상적으로 작동을 하지만, 객체지향적 방법은 아니다.
+//객체를 함수의 인자로 넘겨주는 방법보다는 메서드를 사용하는 것이 좋다.
+
+//Rectangle객체 생성
+var r = new Rectangle(8.5, 11);
+//메서드 추가
+r.area = function(){ return this.width * this.height; }
+//넓이를 구하기 위하여 메서드 호출
+var a = r.area();
+
+//아래는 계산하는 함수를 생성자 내부에서 연결시키는 방법이다.
+function Rectangle(w, h){
+    this.width = w;
+    this.height = h;
+    this.area = function(){ return this.width * this.height; }
+}
+var r = new Rectangle(8.5, 11);
+var a = r.area();
+</code></pre>
+###
+
+
+
+
 
 226
 
