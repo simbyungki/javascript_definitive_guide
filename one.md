@@ -876,10 +876,55 @@ a = r.area();</code></pre>
 236 ~ 237?
 #### 클래스 메서드
 - 클래스 메서드는 클래스의 인스턴스보다 클래스 자체와 연관이 있다. 특정 인스턴스를 통해 호출되는 것이 아닌 클래스 자체를 통해 호출된다.
--
+- 클래스 프로퍼티와 마찬가지로 클래스 메서드도 전역에서 접근할 수 있다. 특정한 메서드에서 작동하는 것이 아니기 때문에, 쉽게 클래스를 통해 호출되는 함수라고 생각할 수 있다.
+- 함수와  클래스를 연관시키면 네임스페이스에서 보호 영역을 제공받을 수 있으며 이를 통해 네임스페이스의 충돌을 방지할 수 있다.
+#### 클래스 예
+- 아래 코드는 원을 표현하기 위한 객체를 생성할 생성자 함수와 프로토 타입 객체에 대한 것이다. 인스턴스 프로퍼티와 인스턴스 메서드, 클래스 프로퍼티, 클래스 메서드가 포함되어 있다.
+<pre><code>//생성자 함수 정의
+function Circle(radius){
+    //r은 인스턴스 프로퍼티이며, 생성자 안에서 정의되고 초기화된다.
+    this.r = radius;
+}
+//Circle.PI는 클래스 프로퍼티다. 이는 생성자 함수의 프로퍼티다.
+Circle.PI = 3.14159;
 
+//아래는 원의 넓이를 계산하기 위한 인스턴스 메서드가 정의되어 있다.
+Circle.prototype.area = function(){ return Circle.PI * this.r * this.r; }
 
-237
+//아래 클래스 메서드는 Circle의 두 객체들을 받아서 더 큰 반지름을 가진 것을
+//반환한다.
+Circle.max = function(a,b){
+    a.r > b.r ? return b : return a;
+}
+
+//아래는 위 정의된 필드를 사용하는 예이다.
+var c = new Circle(1,0);        //Circle 클래스의 인스턴스를 하나 만든다.
+c.r = 2.2;                      //인스턴스 프로퍼티 r의 값을 지정한다.
+var a = c.area();               //인스턴스 메서드인 area()를 호출한다.
+var x = Math.exp(Circle.PI);    //클래스 프로퍼티인 PI를 사용하여 계산을 한다
+var d = new Circle(1,2);        //또 다른 Circle 인스턴스를 만든다.
+var bigger = Circle.max(c,d);   //클래스 메서드 max()를 사용한다.</code></pre>
+#### private 멤버
+- 객체지향 언어들의 공통점은 클래스의 프로퍼티를 클래스 외부의 다른 코드에서 조작할 수 없고 클래스의 메서드만 사용할 수 있게 private으로 선언할 수 있다는 것이다.
+- '데이터 캡슐화'라는 기술은 프로퍼티를 private화 하고 특별한 메서드를 통해서만 이들을 읽거나 쓸 수 있게 한다.
+- 자바스크립트는 클로저를 사용하여 이를 흉내 낼 수 있지만 이를 위해서는 인스턴스 마다 접근 메서드가 저장되어 있어야 한다.
+- 아래 코드는 자바스크립트에서 어떻게 구현되는지 보여준다. Rectangle은 width와 height의 값이 바뀌지 않으며, 접근 메서드를 통해서만 이 프로퍼티들을 사용할 수 있다.
+<pre><code>function ImmutableRectangle(w, h){
+    //이 생성자는 초기화시킬 객체의 width와 height 프로퍼티를 저장하지 않는다.
+    // 대신 객체 접근 메서드들을 정의해준다.
+    //이 메서드들은 클로저이며, width와 height의 값은 메서드의 유효 범위 체인 안에 있다.
+    this.getWidth = function(){ return w; }
+    this.getWHeight = function(){ return h; }
+}
+
+//클래스의 프로토타입 객체에 일반 메서드가 올 수 있다.
+ImmutableRectangle.prototype.area = function(){
+    return this.getWidth() * this.getHeight();
+}</code></pre>
+- http://www.crockford.com/javascript/private.html
+### 공통적인 객체 메서드
+
+241
 
 
 
