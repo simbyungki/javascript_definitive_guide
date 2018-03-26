@@ -922,56 +922,25 @@ ImmutableRectangle.prototype.area = function(){
     return this.getWidth() * this.getHeight();
 }</code></pre>
 - http://www.crockford.com/javascript/private.html
+
+
+
+
 ### 공통적인 객체 메서드
-
-241
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- 새로운 자바스크립트 클래스를 정의할 때 항상 염두에 두고 정의해야 하는 메소드가 몇가지 있다.
+#### toString() 메서드
+- toString()에 깔려있는 기본 아이디어는 객체의 각 클래스가 자신을 문자열로 표현할 수 있게 만드는 것이다. 하나의 클래스를
+정의하면 클래스의 신스턴스가 문자열로 변환될 수 있게 반드시 toString() 메서드를 정의해야 한다. 이 문자열에는 변환되는 객체의 대한 정보가 들어있어야 한다.
+또한, 이렇게 해두면 디버깅 시 유용하게 사용된다. 문자열이 적당하게 구성되면 그 자체만으로 프로그램 내 유용한 정보가 될 수 있다.
+<pre><code>Circle.prototype.toStirng = function(){
+    return "[Circle of radius " + this.r + ", centered at (" + this.x + ", " + this.y + ").]";
+}
+//'[Circle of radius 1, conterd at (0,0).]</code></pre>
+#### valueOf() 메서드
+- valueOf() 메서드는 toString()과 상당히 유사하지만, 자바스크립트가 객체를 Number 같은 문자열 외의 기본 타입으로 변환하려 할때 호출한다.
+#### 비교 메서드
+- 자바스크립트의 동등 연산자는 값이 아닌 참조를 통해 객체를 비교한다. 직접 만든 클래스의 인스턴스들이 서로 동등한지를 검사할 수 있게 하려면 equals()라는 인스턴스
+메서드를 정의하면 된다.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+244
